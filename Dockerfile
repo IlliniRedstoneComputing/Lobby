@@ -11,6 +11,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Download Fabric server launcher
+# Update these versions as needed, then rebuild with: docker-compose build --no-cache
 ARG FABRIC_VERSION=0.15.11
 ARG MINECRAFT_VERSION=1.20.4
 RUN wget -O fabric-server-launcher.jar \
