@@ -18,6 +18,7 @@ def generate_regions(data):
 
     repeater_north = BlockState("minecraft:repeater", facing="north")
     repeater_south = BlockState("minecraft:repeater", facing="south")
+    air = BlockState("minecraft:air")
     
     # Iterate over slices (0 <= i <= 7)
     for nreg, sreg, i in zip(nregions, sregions, range(8)):
@@ -27,12 +28,12 @@ def generate_regions(data):
             bytes = data[(j+16) + 32*i]
             # Iterate over bits
             for k in range(8):
-                if byten & 0x1: nreg[-j*2,(j+1)%2 + 2*k,0] = repeater_north
-                if bytes & 0x1: sreg[-j*2,(j+1)%2 + 2*k,0] = repeater_south
+                nreg[-j*2,(j+1)%2 + 2*k,0] = repeater_north if byten & 0x1 else air
+                sreg[-j*2,(j+1)%2 + 2*k,0] = repeater_south if bytes & 0x1 else air
                 byten >>= 1
                 bytes >>= 1
 
-    all_regions = {f"Region {i}":reg for i,reg in enumerate(nregions + sregions)}
+    all_regions = {f"Bytes[{i*16}:{(i+1)*16}]":reg for i,reg in enumerate(nregions + sregions)}
     return all_regions
 
 def main():
