@@ -68,7 +68,7 @@
     ; Description: Does absolutely nothing
     ; Syntax:
     ;   halt
-    nop => 0b11 @ 0b000 @ 0b000
+    nop => 0b00 @ 0b000 @ 0b000
 }
 
 ; Register definitions
