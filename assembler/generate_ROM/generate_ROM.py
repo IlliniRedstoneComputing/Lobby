@@ -1,0 +1,60 @@
+from sys import argv
+from os import path
+from litemapy import Schematic, Region, BlockState
+
+def parse_bin(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+    return data
+
+def generate_regions(data):
+    # Define a north and south region per slice
+    nregions = []
+    sregions = []
+    for i in range(8):
+        (bx, by, bz) = (34+i%2, 17, 2+7*i)
+        nregions.append(Region(bx, by, bz, -31, 16, 1))
+        sregions.append(Region(bx, by, bz+2, -31, 16, 1))
+
+    repeater_north = BlockState("minecraft:repeater", facing="north")
+    repeater_south = BlockState("minecraft:repeater", facing="south")
+    
+    # Iterate over slices (0 <= i <= 7)
+    for nreg, sreg, i in zip(nregions, sregions, range(8)):
+        # Iterate over bytes
+        for j in range(16):
+            byten = data[j + 32*i]
+            bytes = data[(j+16) + 32*i]
+            # Iterate over bits
+            for k in range(8):
+                if byten & 0x1: nreg[-j*2,(j+1)%2 + 2*k,0] = repeater_north
+                if bytes & 0x1: sreg[-j*2,(j+1)%2 + 2*k,0] = repeater_south
+                byten >>= 1
+                bytes >>= 1
+
+    all_regions = {f"Region {i}":reg for i,reg in enumerate(nregions + sregions)}
+    return all_regions
+
+def main():
+    if len(argv) > 1:
+        file_path = " ".join(argv[1:])
+    else:
+        file_path = input(".bin file to convert: ")
+    if not file_path.endswith(".bin"):
+        print("File must be .bin\nProgram exited.")
+        return 1
+    file_name = path.splitext(path.basename(file_path))[0]
+    
+    print(file_path, file_name)
+    
+    data = parse_bin(file_path)
+    print(data.hex(sep="\t", bytes_per_sep=1))
+    
+    all_regions = generate_regions(data)
+    schem = Schematic(name=f"{file_name}_ROM", author="AMcD", description="ROM generated from binary file", regions=all_regions)
+    
+    # Save the schematic
+    schem.save(f"{path.splitext(file_path)[0]}_ROM.litematic")
+
+if __name__ == "__main__":
+    main()
