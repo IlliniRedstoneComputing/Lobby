@@ -1,0 +1,19 @@
+services:
+  lobby:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: minecraft-lobby:latest
+    container_name: minecraft-lobby
+    ports:
+      - "25565:25565"
+    volumes:
+      - ./config:/data/config
+      - ./logs:/data/logs
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS:--Xmx2G -Xms1G}
+    env_file:
+      - .env
+    restart: unless-stopped
+    stdin_open: true
+    tty: true

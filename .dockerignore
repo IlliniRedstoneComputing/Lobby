@@ -6,9 +6,6 @@
 README.md
 *.md
 
-# Server data (will be mounted as volumes)
-server/
-
 # Docker files
 docker-compose.yml
 Dockerfile
