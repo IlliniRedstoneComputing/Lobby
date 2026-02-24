@@ -1,16 +1,21 @@
 ARG TYPE=FABRIC
-FROM minecraft-server-image:latest
+ARG EULA=TRUE
+FROM itzg/minecraft-server:latest
 
-# Copy the files (they will take on default permissions)
-COPY ./server /data
-
-# 1. Set all directories to 755
-# 2. Set all files to 644
-RUN find /data -type d -exec chmod 755 {} + && \
-    find /data -type f -exec chmod 644 {} + && \
-    chown -R minecraft:minecraft /data
-
-VOLUME [ "/data/config", "/data/logs" ]
-
-ENV EULA=TRUE
 ENV TYPE=FABRIC
+ENV EULA=TRUE
+
+# Copy server files (they will take on default permissions)
+WORKDIR /usr/src/init_data
+COPY ./server .
+RUN chown -R minecraft:minecraft . && \ 
+    find . -type d -exec chmod 755 {} + && \
+    find . -type f -exec chmod 644 {} +
+
+WORKDIR /
+
+# Copy the entrypoint script and make it executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

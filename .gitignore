@@ -2,10 +2,8 @@
 .env
 
 # Server runtime files
-server/world/*
 server/logs/*
 server/config/*
-server/mods/*
 
 # But keep the directories
 !server/world/.gitkeep
@@ -17,7 +15,6 @@ server/mods/*
 server/*.jar
 server/*.json
 server/*.txt
-server/*.properties
 server/libraries/
 server/versions/
 server/crash-reports/
