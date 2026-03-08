@@ -1,9 +1,13 @@
 ARG TYPE=FABRIC
 ARG EULA=TRUE
+ARG ONLINE_MODE=FALSE
+ARG VERSION=1.21.8
 FROM itzg/minecraft-server:latest
 
 ENV TYPE=FABRIC
 ENV EULA=TRUE
+ENV ONLINE_MODE=FALSE
+ENV VERSION=1.21.8
 
 # Copy server files (they will take on default permissions)
 WORKDIR /usr/src/init_data
@@ -21,3 +25,4 @@ RUN chmod +x /entrypoint.sh
 EXPOSE 25565
 
 ENTRYPOINT ["/entrypoint.sh"]
+
