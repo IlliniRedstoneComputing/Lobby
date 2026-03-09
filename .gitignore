@@ -3,11 +3,9 @@
 
 # Server runtime files
 server/logs/*
-server/config/*
 
 # But keep the directories
 !server/logs/.gitkeep
-!server/config/.gitkeep
 
 # Server generated files
 server/*.jar
