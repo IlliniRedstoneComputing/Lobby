@@ -1,4 +1,4 @@
-FROM alpine:latest as builder
+FROM alpine:latest AS builder
 
 COPY ./server/config/FabricProxy-Lite.toml /FabricProxy-Lite.toml
 RUN apk add --no-cache gettext && \

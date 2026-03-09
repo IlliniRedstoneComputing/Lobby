@@ -7,6 +7,7 @@ echo "Checking for missing server files..."
 # Or use 'cp -u' to copy only if the source is newer than the destination
 cp -a /usr/src/init_data/mods /data/
 cp -a /usr/src/init_data/world /data/
+cp -a /usr/src/init_data/config /data/
 cp -a /usr/src/init_data/server.properties /data/server.properties
 
 echo "Initialization complete. Starting server..."
