@@ -8,8 +8,7 @@ ENV VERSION=1.21.8
 # Copy server files (they will take on default permissions)
 WORKDIR /usr/src/init_data
 COPY ./server .
-COPY --chmod=644 ./server/config/FabricProxy-Lite.toml /config/FabricProxy-Lite.toml
-RUN chown -R minecraft:minecraft . && \ 
+RUN chown -R minecraft:minecraft . && \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} +
 
