@@ -1,14 +1,3 @@
-FROM alpine:latest AS builder
-
-COPY ./server/config/FabricProxy-Lite.toml /FabricProxy-Lite.toml
-RUN apk add --no-cache gettext && \
-    envsubst < /FabricProxy-Lite.toml > /FabricProxy-Lite.toml.tmp && \
-    mv /FabricProxy-Lite.toml.tmp /FabricProxy-Lite.toml
-
-ARG TYPE=FABRIC
-ARG EULA=TRUE
-ARG ONLINE_MODE=FALSE
-ARG VERSION=1.21.8
 FROM itzg/minecraft-server:latest
 
 ENV TYPE=FABRIC
@@ -19,7 +8,7 @@ ENV VERSION=1.21.8
 # Copy server files (they will take on default permissions)
 WORKDIR /usr/src/init_data
 COPY ./server .
-COPY --from=builder ./FabricProxy-Lite.toml /usr/src/init_data/config/FabricProxy-Lite.toml
+COPY --chmod=644 ./server/config/FabricProxy-Lite.toml /config/FabricProxy-Lite.toml
 RUN chown -R minecraft:minecraft . && \ 
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} +
